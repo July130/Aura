@@ -1,0 +1,7 @@
+body { font-family: sans-serif; background: #0d0d1a; color: #fff; padding: 2rem; margin: 0; }
+h1 { color: #c084fc; }
+.card { background: #1a1a2e; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; }
+h2 { color: #a855f7; margin-top: 0; }
+input[type="text"] { padding: 0.5rem; border-radius: 6px; border: 1px solid #555; background: #0d0d1a; color: #fff; margin-right: 0.5rem; }
+label { display: block; margin: 0.5rem 0; cursor: pointer; }
+button { padding: 0.6rem 1.2rem; background: #c084fc; border: none; border-radius: 8px; cursor: pointer; margin-top: 0.5rem; }

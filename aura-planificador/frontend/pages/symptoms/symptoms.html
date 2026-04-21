@@ -1,0 +1,89 @@
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Síntomas - AURA</title>
+        <link rel="stylesheet" href="../index/index.css">
+        <link rel="stylesheet" href="symptoms.css">
+    </head>
+    <body>
+        <div class="app-container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="logo">
+                    <a href="../../index.html">
+                        <img src="../../assets/img/logo_horizontal.png" alt="AURA Logo" style="max-width: 100%; height: auto;">
+                    </a>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <a href="../symptoms/symptoms.html" class="menu-item active">Síntomas</a>
+                    <a href="../prediction/prediction.html" class="menu-item">Predicción</a>
+                    <a href="../aIAssistant/aiassistant.html" class="menu-item">Asistente IA</a>
+                </nav>
+
+                <button class="btn-cerrar-sesión">Cerrar Sesión</button>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <header class="dashboard-header">
+                    <h1>¿Cómo te sientes hoy?</h1>
+                </header>
+
+                <section class="top-row" style="grid-template-columns: 1fr; margin-top: 2rem;">
+                    <div class="card">
+                        <h3 class="section-title">Síntomas</h3>
+                        <div class="sintomas-grid">
+                            <button class="pill">Dolor</button>
+                            <button class="pill">Fatiga</button>
+                            <button class="pill">Antojos</button>
+                            <button class="pill">Irritabilidad</button>
+                            <button class="pill">Náuseas</button>
+                            <button class="pill">Dolor de cabeza</button>
+                            <button class="pill">Sensibilidad</button>
+                            <button class="pill">Inflamación</button>
+                            <button class="pill">Ansiedad</button>
+                            <button class="pill">Insomnio</button>
+                        </div>
+
+                        <h3 class="section-title" style="margin-top: 2rem;">Intensidad</h3>
+                        <div class="intensidad">
+                            <button class="circle-btn" data-value="1">1</button>
+                            <button class="circle-btn" data-value="2">2</button>
+                            <button class="circle-btn" data-value="3">3</button>
+                            <button class="circle-btn" data-value="4">4</button>
+                            <button class="circle-btn" data-value="5">5</button>
+                        </div>
+
+                        <div style="margin-top: 3rem; text-align: right;">
+                            <button class="btn-primary">Guardar síntomas</button>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Footer -->
+            <footer class="footer">
+                 <div class="footer-logo"></div>
+                 <div class="footer-contacts">
+                      <h4>Contactos</h4>
+                      <p>Andres Espinosa Rojas</p>
+                      <p>Alirio Andres Piña</p>
+                      <p>Valentina Corredor</p>
+                      <p>Laura Taborda</p>
+                      <p>Juliana Patiño</p>
+                 </div>
+                 <div class="footer-cesde">
+                      <h2>CESDE</h2>
+                 </div>
+                 <div class="footer-schedule">
+                      <h3>Sábado</h3>
+                      <p>7:30 a 6:00 pm</p>
+                 </div>
+            </footer>
+        </div>
+        <script src="symptoms.js"></script>
+    </body>
+    </html>

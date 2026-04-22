@@ -1,0 +1,145 @@
+:root {
+    --primary: #800040;
+    --primary-light: #b34a75;
+    --bg-main: #fdf2f4;
+    --white: #ffffff;
+    --text-main: #2d0a1b;
+    --sidebar-width: 260px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Roboto, sans-serif; background-color: var(--bg-main); color: var(--text-main); }
+
+.layout-container { display: grid; grid-template-columns: var(--sidebar-width) 1fr; min-height: 100vh; }
+
+/* SIDEBAR REFINADO */
+.sidebar { 
+    background-color: var(--primary); 
+    color: white; 
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.logo-container { display: flex; align-items: center; gap: 10px; margin-bottom: 3rem; }
+.logo-text .brand { display: block; font-weight: bold; font-size: 1.2rem; letter-spacing: 2px; }
+.logo-text .slogan { font-size: 0.7rem; opacity: 0.8; }
+
+.main-nav ul { list-style: none; }
+.main-nav li { margin-bottom: 0.5rem; }
+.main-nav a { 
+    color: rgba(255,255,255,0.7); 
+    text-decoration: none; 
+    padding: 12px 15px; 
+    display: block; 
+    border-radius: 12px;
+    transition: 0.3s;
+}
+.main-nav li.active a, .main-nav a:hover { 
+    background: rgba(255,255,255,0.15); 
+    color: white; 
+}
+
+.user-profile-pill {
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.avatar-small { width: 35px; height: 35px; background: var(--primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+
+/* HEADER Y MAIN */
+.main-wrapper { display: flex; flex-direction: column; }
+.top-header { 
+    padding: 1.5rem 3rem; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+.header-actions { display: flex; align-items: center; gap: 15px; }
+.user-avatar-circle img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+
+.dashboard-content { padding: 0 3rem 3rem 3rem; flex: 1; }
+
+/* GRID DE CARDS */
+.top-grid { 
+    display: grid; 
+    grid-template-columns: 1.5fr 1fr; 
+    gap: 25px; 
+    margin-bottom: 30px;
+}
+.card { 
+    background: var(--white); 
+    border-radius: 30px; 
+    padding: 2.5rem; 
+    box-shadow: 0 10px 30px rgba(128, 0, 64, 0.05); 
+}
+
+/* CIRCULAR PROGRESS */
+.circular-progress {
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: conic-gradient(var(--primary) 120deg, #f0f0f0 0deg); /* 120deg simulando progreso */
+    display: flex; align-items: center; justify-content: center;
+}
+.inner-circle {
+    width: 150px; height: 150px;
+    background: white; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.inner-circle .number { font-size: 3rem; font-weight: bold; color: var(--primary); }
+
+/* EMOCIONES CARDS */
+.emotions-grid { 
+    display: flex; 
+    gap: 15px; 
+    margin-top: 20px;
+    position: relative;
+}
+.emotion-card {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 2px solid transparent;
+}
+.emotion-card.selected { 
+    background: #fdf2f4; 
+    border-color: var(--primary); 
+}
+.emo-icon { font-size: 1.5rem; display: block; margin-bottom: 10px; }
+
+/* BANNER */
+.recommendation-banner {
+    margin-top: 30px;
+    background: linear-gradient(90deg, #9d335c, #e0a3bb);
+    border-radius: 30px;
+    padding: 30px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* FOOTER */
+.main-footer {
+    background-color: var(--primary);
+    color: white;
+    padding: 3rem;
+    margin-top: auto;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+}
+.footer-contacts ul { list-style: none; font-size: 0.8rem; opacity: 0.9; }
+.cesde-logo { font-size: 2.5rem; font-weight: bold; text-align: center; display: block; }

@@ -2,45 +2,68 @@ import { User } from '../../models/User.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.login-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const rememberCheckbox = document.getElementById('remember-me');
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+
+    // 1. Cargar correo recordado si existe
+    const savedEmail = localStorage.getItem('aura_remembered_email');
+    if (savedEmail && emailInput) {
+        emailInput.value = savedEmail;
+        if (rememberCheckbox) rememberCheckbox.checked = true;
+    }
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // 1. Capturar los valores del formulario
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
+        // Ocultar errores previos
+        if(emailError) emailError.style.display = 'none';
+        if(passwordError) passwordError.style.display = 'none';
+        
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
 
-        if (!email || !password) {
-            alert('Por favor ingresa correo y contraseña.');
-            return;
-        }
-
-        // 2. Buscar el usuario mediante el Modelo User
+        // Buscar el usuario mediante el Modelo User
         const user = User.findByEmail(email);
 
         if (!user) {
-            alert('No existe una cuenta registrada con este correo.');
+            if(emailError) {
+                emailError.textContent = 'No existe una cuenta registrada con este correo.';
+                emailError.style.display = 'block';
+            } else alert('No existe una cuenta registrada con este correo.');
             return;
         }
 
-        // 3. Verificar si la contraseña coincide
+        // Verificar si la contraseña coincide
         if (user.password !== password) {
-            alert('Contraseña incorrecta. Inténtalo de nuevo.');
+            if(passwordError) {
+                passwordError.textContent = 'Contraseña incorrecta. Inténtalo de nuevo.';
+                passwordError.style.display = 'block';
+            } else alert('Contraseña incorrecta.');
             return;
         }
 
-        // 4. Verificar el estado de la cuenta
+        // Verificar el estado de la cuenta
         if (user.status !== 'active' && user.estado !== 'activo') {
             alert('Tu cuenta no está activa. Por favor contacta soporte.');
             return;
         }
 
-        // 5. GUARDAR SESIÓN (Persistencia en el Modelo)
+        // --- Lógica de Recuérdame ---
+        if (rememberCheckbox && rememberCheckbox.checked) {
+            localStorage.setItem('aura_remembered_email', email);
+        } else {
+            localStorage.removeItem('aura_remembered_email');
+        }
+
+        // GUARDAR SESIÓN (Persistencia en el Modelo)
         User.login(user.id);
 
         alert(`Bienvenid@ de nuevo, ${user.name}`);
 
-        // 6. Redirigir al Dashboard
+        // Redirigir al Dashboard
         window.location.href = '../../index.html';
     });
 });

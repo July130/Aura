@@ -13,7 +13,12 @@
             <aside class="sidebar">
                 <div class="logo">
                     <a href="../../index.html">
-                        <img src="../../assets/img/logo_horizontal.png" alt="AURA Logo" style="max-width: 100%; height: auto;">
+                        <picture>
+                            <!-- En pantallas menores a 900px carga el vertical -->
+                            <source media="(max-width: 900px)" srcset="../../assets/img/logo_vertical.png">
+                            <!-- Por defecto carga el horizontal -->
+                            <img src="../../assets/img/logo_horizontal.png" alt="AURA Logo" class="aura-logo" style="max-width: 100%; height: auto;">
+                        </picture>
                     </a>
                 </div>
 
@@ -21,6 +26,7 @@
                     <a href="../symptoms/symptoms.html" class="menu-item active">Síntomas</a>
                     <a href="../prediction/prediction.html" class="menu-item">Predicción</a>
                     <a href="../aIAssistant/aiassistant.html" class="menu-item">Asistente IA</a>
+                    <a href="#" class="menu-item">Quiénes Somos</a>
                 </nav>
 
                 <button class="btn-cerrar-sesión">Cerrar Sesión</button>
@@ -65,25 +71,30 @@
             </main>
 
             <!-- Footer -->
-            <footer class="footer">
-                 <div class="footer-logo"></div>
-                 <div class="footer-contacts">
-                      <h4>Contactos</h4>
-                      <p>Andres Espinosa Rojas</p>
-                      <p>Alirio Andres Piña</p>
-                      <p>Valentina Corredor</p>
-                      <p>Laura Taborda</p>
-                      <p>Juliana Patiño</p>
+            <footer class="footer" style="display: flex; justify-content: space-between; align-items: stretch; padding: 2rem 4rem;">
+                 <!-- Columna Izquierda (Contactos) -->
+                 <div class="footer-contacts" style="flex: 1; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid rgba(255, 255, 255, 0.4); padding-right: 2rem; margin: 0; min-width: auto; height: auto;">
+                     <h4 style="margin-bottom: 0.8rem;">Contactos</h4>
+                     <p style="margin-bottom: 0.2rem;">Andres Espinosa Rojas</p>
+                     <p style="margin-bottom: 0.2rem;">Alirio Andres Piña</p>
+                     <p style="margin-bottom: 0.2rem;">Valentina Corredor</p>
+                     <p style="margin-bottom: 0.2rem;">Laura Taborda</p>
+                     <p style="margin-bottom: 0.2rem;">Juliana Patiño</p>
                  </div>
-                 <div class="footer-cesde">
-                      <h2>CESDE</h2>
+
+                 <!-- Columna Central (Logo) -->
+                 <div class="footer-cesde" style="flex: 1; display: flex; justify-content: center; align-items: center; padding: 0 2rem; margin: 0;">
+                     <img src="../../assets/img/logo_cesde_blanco.png" alt="Logo CESDE" style="max-height: 90px; width: auto; opacity: 1;">
                  </div>
-                 <div class="footer-schedule">
-                      <h3>Sábado</h3>
-                      <p>7:30 a 6:00 pm</p>
+
+                 <!-- Columna Derecha (Horario) -->
+                 <div class="footer-schedule" style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: right; border-left: 1px solid rgba(255, 255, 255, 0.4); padding-left: 2rem; margin: 0;">
+                      <h3 style="margin-bottom: 0.5rem; font-family: 'Cornella', serif; font-size: 2rem; letter-spacing: 2px;">CESDE</h3>
+                      <p style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.2rem;">Sábado</p>
+                      <p style="opacity: 0.9;">7:30 a 6:00 pm</p>
                  </div>
             </footer>
         </div>
-        <script src="symptoms.js"></script>
+        <script type="module" src="symptoms.js"></script>
     </body>
     </html>

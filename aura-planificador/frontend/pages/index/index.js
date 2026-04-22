@@ -1,29 +1,49 @@
+import { User } from '../../models/User.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Obtenemos el elemento que contiene el día y el aro de progreso
+    // 1. Elementos del DOM
     const dayElement = document.getElementById('cycle-day');
     const ringElement = document.querySelector('.progress-ring');
     
-    // Asumimos un ciclo estandar de 28 días (o lo que configure el usuario)
-    const totalCycleDays = 28;
+    // 2. Extraer usuario de la sesión actual
+    const sesion = User.getCurrentUser();
+    let currentDay = 1; // Default
+    let totalCycleDays = 28;
+
+    if (sesion) {
+        // Obtenemos el ciclo más reciente si lo hay
+        const latestCycle = sesion.getLatestCycle();
+        if (latestCycle) {
+            totalCycleDays = latestCycle.averageDuration || 28;
+            
+            const hoy = new Date();
+            // Evitamos fechas futuras y obtenemos diferencia real en días enteros
+            if (hoy >= latestCycle.startDate) {
+                const diffTime = Math.abs(hoy - latestCycle.startDate);
+                // +1 porque el día que inicia ya es el día 1
+                currentDay = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            }
+        }
+    }
     
     if (dayElement && ringElement) {
-        // Obtenemos el día en el que se encuentra actualmente el texto
-        const currentDay = parseInt(dayElement.textContent, 10);
+        // Actualizamos visualmente el número
+        dayElement.textContent = currentDay;
         
         // Calculamos el porcentaje, con tope al 100% 
         const progressPercent = Math.min((currentDay / totalCycleDays) * 100, 100);
         
         // La animación inicial sucede luego de un ligero timeout
         setTimeout(() => {
-            // El desfase máximo es 440 (perímetro de círculo de radio 70px)
+            // El desfase máximo es 440 (perímetro de círculo r=70)
             const finalOffset = 440 - (440 * progressPercent) / 100;
             ringElement.style.strokeDashoffset = finalOffset;
-        }, 150); // Mismo efecto estético de "cargar"
+        }, 150);
     }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const sesion = JSON.parse(localStorage.getItem('sesion_actual_aura'));
+    const sesion = User.getCurrentUser();
 
     if (sesion) {
         const nameElement = document.getElementById('user-name');
@@ -63,100 +83,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. OBTENER SESIÓN ACTUAL
-    const sesion = JSON.parse(localStorage.getItem('sesion_actual_aura'));
-    if (!sesion) return; // Si no hay sesión, no hacemos nada
-
-    // 2. REFERENCIAS
-    const emocionPills = document.querySelectorAll('.diario-cards .card:nth-child(1) .pill');
-    const sintomasPills = document.querySelectorAll('.diario-cards .card:nth-child(2) .pill');
-    const flujoItems = document.querySelectorAll('.circle-item');
-    const diarioContainer = document.querySelector('.diario-cards');
-
-    // 3. VERIFICAR SI YA SE GUARDÓ EN ESTA SESIÓN
-    if (localStorage.getItem(`diario_completado_${sesion.email}`)) {
-        bloquearDiario();
-    }
-
-    // --- LÓGICA DE SELECCIÓN ---
-
-    emocionPills.forEach(pill => {
-        pill.addEventListener('click', () => {
-            emocionPills.forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-            verificarYGuardar();
-        });
-    });
-
-    sintomasPills.forEach(pill => {
-        pill.addEventListener('click', () => {
-            pill.classList.toggle('active');
-            verificarYGuardar();
-        });
-    });
-
-    flujoItems.forEach(item => {
-        item.addEventListener('click', () => {
-            flujoItems.forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            verificarYGuardar();
-        });
-    });
-
-    // --- FUNCIONES CORE ---
-
-    function verificarYGuardar() {
-        const emocion = document.querySelector('.diario-cards .card:nth-child(1) .pill.active');
-        const sintomas = document.querySelectorAll('.diario-cards .card:nth-child(2) .pill.active');
-        const flujo = document.querySelector('.circle-item.active');
-
-        // Solo procedemos si hay al menos uno de cada sección
-        if (emocion && sintomas.length > 0 && flujo) {
-            const datosDiario = {
-                usuario: sesion.email,
-                emocion: emocion.textContent.trim(),
-                sintomas: Array.from(sintomas).map(s => s.textContent.trim()),
-                flujo: flujo.querySelector('span').textContent.trim(),
-                fecha: new Date().toISOString()
-            };
-
-            // Guardar en el historial general
-            const historial = JSON.parse(localStorage.getItem('historial_diario_aura')) || [];
-            historial.push(datosDiario);
-            localStorage.setItem('historial_diario_aura', JSON.stringify(historial));
-
-            // Marcar como completado para este usuario
-            localStorage.setItem(`diario_completado_${sesion.email}`, 'true');
-
-            alert('¡Diario del día guardado! Gracias por registrar cómo te sientes.');
-            bloquearDiario();
-        }
-    }
-
-    function bloquearDiario() {
-        // Añadimos un estilo visual de bloqueo
-        diarioContainer.style.opacity = '0.6';
-        diarioContainer.style.pointerEvents = 'none';
-
-        // Opcional: Cambiar el título para avisar al usuario
-        const tituloDiario = document.querySelector('.diario-section h2');
-        if (tituloDiario) tituloDiario.textContent = 'Diario - Completado hoy ✅';
-    }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
     const btnLogout = document.querySelector('.btn-cerrar-sesión');
 
     if (btnLogout) {
         btnLogout.addEventListener('click', () => {
-            // 1. Eliminar la sesión de LocalStorage
-            localStorage.removeItem('sesion_actual_aura');
+            // 1. Eliminar la sesión
+            User.logout();
 
             // 2. Opcional: Mostrar un mensaje rápido antes de salir
             alert('Has cerrado sesión correctamente. ¡Vuelve pronto!');
 
             // 3. Redirigir al login
-            // Ajusta la ruta según tu estructura de carpetas
             window.location.href = 'pages/login/login.html';
         });
     }
@@ -187,23 +124,35 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const btnAjustes = document.querySelector('button[title="Ajustes"]');
-    const btnPerfil = document.querySelector('button[title="Perfil"]');
-    const sesion = JSON.parse(localStorage.getItem('sesion_actual_aura'));
+    // Lógica para desplegar menú de perfil
+    const btnAvatar = document.getElementById('user-avatar');
+    const profileDropdown = document.getElementById('profileDropdown');
 
-    if (btnAjustes) {
-        btnAjustes.addEventListener('click', () => {
-            alert('La configuración de la cuenta estará disponible próximamente.');
+    if (btnAvatar && profileDropdown) {
+        btnAvatar.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evita cierre inmediato
+            if (profileDropdown.style.display === 'none') {
+                profileDropdown.style.display = 'block';
+            } else {
+                profileDropdown.style.display = 'none';
+            }
+        });
+
+        // Cerrar al hacer clic en cualquier otra parte
+        window.addEventListener('click', () => {
+            if (profileDropdown.style.display === 'block') {
+                profileDropdown.style.display = 'none';
+            }
         });
     }
 
-    if (btnPerfil) {
-        btnPerfil.addEventListener('click', () => {
-            if (sesion) {
-                alert(`Perfil de Usuario:\nNombre: ${sesion.name}\nCorreo: ${sesion.email}`);
-            } else {
-                window.location.href = 'pages/login/login.html';
-            }
+    // Cerrar sesión desde el dropdown
+    const dropdownLogout = document.getElementById('dropdown-logout');
+    if (dropdownLogout) {
+        dropdownLogout.addEventListener('click', (e) => {
+            e.preventDefault();
+            User.logout();
+            window.location.href = 'pages/login/login.html';
         });
     }
 });

@@ -1,3 +1,5 @@
+import { User } from '../../models/User.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.register-form');
 
@@ -41,35 +43,27 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // --- PERSISTENCIA LOCAL ---
+        // --- PERSISTENCIA CON EL MODELO USER ---
+        
+        // 1. Crear la instancia de la clase
+        const newUser = new User(
+            Date.now(),
+            name,
+            email,
+            password
+        );
 
-        // 1. Obtener base de datos actual
-        let users = JSON.parse(localStorage.getItem('usuarios_aura')) || [];
+        // 2. Registrar en LocalStorage mediante User.js
+        const success = User.registerUser(newUser);
 
-        // 2. Verificar si el correo ya existe (case insensitive para evitar errores)
-        const emailExists = users.some(user => user.email.toLowerCase() === email.toLowerCase());
-        if (emailExists) {
+        if (!success) {
             alert('El correo electrónico ya está registrado.');
             return;
         }
 
-        // 3. Crear el nuevo usuario
-        const newUser = {
-            id: Date.now(),
-            name: name,
-            email: email,
-            password: password,
-            estado: 'activo',
-            fechaRegistro: new Date().toLocaleString() // Más legible para el administrador
-        };
-
-        // 4. Guardar en el array y actualizar LocalStorage
-        users.push(newUser);
-        localStorage.setItem('usuarios_aura', JSON.stringify(users));
-
         alert('¡Registro exitoso! Ya puedes entrar.');
 
-        // Redirección
+        // 3. Redirección
         window.location.href = '../login/login.html';
     });
 });

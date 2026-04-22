@@ -12,7 +12,12 @@
         <aside class="sidebar">
             <div class="logo">
                 <a href="../../index.html">
-                    <img src="assets/img/logo_horizontal.png" alt="AURA Logo" style="max-width: 100%; height: auto;">
+                    <picture>
+                        <!-- En pantallas menores a 900px carga el vertical -->
+                        <source media="(max-width: 900px)" srcset="assets/img/logo_vertical.png">
+                        <!-- Por defecto carga el horizontal -->
+                        <img src="assets/img/logo_horizontal.png" alt="AURA Logo" class="aura-logo" style="max-width: 100%; height: auto;">
+                    </picture>
                 </a>
             </div>
             
@@ -20,6 +25,7 @@
                 <a href="pages/symptoms/symptoms.html" class="menu-item">Síntomas</a>
                 <a href="pages/prediction/prediction.html" class="menu-item">Predicción</a>
                 <a href="pages/aIAssistant/aiassistant.html" class="menu-item">Asistente IA</a>
+                <a href="#" class="menu-item">Quiénes Somos</a>
             </nav>
 
             <button class="btn-cerrar-sesión">Cerrar Sesión</button>
@@ -28,31 +34,35 @@
         <!-- Main Content -->
         <main class="main-content">
             <header class="dashboard-header">
-                <h1>Buenos dias, <span id="user-name"></span></h1>
+                <h1>Buenos dias, <span id="user-name" style="font-family: 'Cornella', serif;"></span></h1>
                 <div class="user-profile">
-                    <button class="profile-action" title="Ajustes">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                    </button>
-                    <button class="profile-action" title="Perfil">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    </button>
-                    <div class="avatar" id="user-avatar">
+                    <!-- Avatar como botón principal -->
+                    <div class="avatar" id="user-avatar" style="cursor: pointer;">
                         <img src="https://ui-avatars.com/api/?name=Sarah&background=83133F&color=fff" alt="Avatar">
+                    </div>
+                    <!-- Menú desplegable oculto -->
+                    <div id="profileDropdown" style="display: none; position: absolute; top: 65px; right: 0; background: white; border-radius: 12px; box-shadow: 0 8px 25px rgba(131, 19, 63, 0.15); width: 200px; padding: 0.5rem 0; z-index: 100; border: 1px solid rgba(0,0,0,0.05);">
+                        <a href="#" class="dropdown-item" style="display: block; padding: 0.8rem 1.5rem; color: #111827; text-decoration: none; font-weight: 600; transition: background 0.2s;">Avatar</a>
+                        <a href="#" class="dropdown-item" style="display: block; padding: 0.8rem 1.5rem; color: #111827; text-decoration: none; font-weight: 600; transition: background 0.2s;">Ajustes</a>
+                        <hr style="margin: 0.5rem 0; border: 0; border-top: 1px solid #f1f1f1;">
+                        <a href="#" id="dropdown-logout" class="dropdown-item" style="display: block; padding: 0.8rem 1.5rem; color: #B4295D; text-decoration: none; font-weight: 700; transition: background 0.2s;">Cerrar Sesión</a>
                     </div>
                 </div>
             </header>
 
             <section class="top-row">
                 <div class="card card-resumen">
-                    <div class="cycle-progress">
-                        <svg width="155" height="155" viewBox="0 0 155 155">
-                            <circle class="bg-ring" cx="77.5" cy="77.5" r="70"></circle>
-                            <circle class="progress-ring" cx="77.5" cy="77.5" r="70"></circle>
-                        </svg>
-                        <div class="cycle-content">
-                            <span class="number" id="cycle-day">12</span>
-                            <span class="label">Día del ciclo</span>
+                    <div class="cycle-wrapper" style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem;">
+                        <div class="cycle-progress">
+                            <svg width="155" height="155" viewBox="0 0 155 155">
+                                <circle class="bg-ring" cx="77.5" cy="77.5" r="70"></circle>
+                                <circle class="progress-ring" cx="77.5" cy="77.5" r="70"></circle>
+                            </svg>
+                            <div class="cycle-content">
+                                <span class="number" id="cycle-day">1</span>
+                            </div>
                         </div>
+                        <span class="label" style="font-weight: 700; font-size: 1.05rem;">Día del ciclo</span>
                     </div>
                     <div class="resumen-content">
                         <h2>Resumen</h2>
@@ -69,39 +79,25 @@
                     </div>
                     <button class="btn-ai">Consultar a IA</button>
                 </div>
-            </section> <section class="diario-section">
-            <h2>Diario</h2>
-            <div class="diario-cards">
-                <div class="card small-card">
-                    <h3>Estado emocional</h3>
-                    <div class="pill-group">
-                        <div class="pill">Alegre</div>
-                        <div class="pill">Sensible</div>
-                        <div class="pill">Triste</div>
-                        <div class="pill">Ansiosa</div>
-                        <div class="pill">Enojada</div>
-                    </div>
+            </section>
+            
+            <section class="action-row">
+                <!-- Card Síntomas -->
+                <div class="card action-card">
+                    <div class="action-icon">📝</div>
+                    <h3>Síntomas</h3>
+                    <p>¿Cómo te sientes hoy? Registra tus síntomas físicos y emocionales para llevar un mejor control de tu ciclo.</p>
+                    <button class="btn-action" onclick="window.location.href='pages/symptoms/symptoms.html'">Agrega tus síntomas</button>
                 </div>
-                <div class="card small-card">
-                    <h3>Sintomas</h3>
-                    <div class="pill-group">
-                        <div class="pill">Cólicos</div>
-                        <div class="pill">Dolor de cabeza</div>
-                        <div class="pill">Fatiga</div>
-                        <div class="pill">Acné</div>
-                    </div>
+                
+                <!-- Card Predicciones -->
+                <div class="card action-card">
+                    <div class="action-icon">✨</div>
+                    <h3>Predicciones</h3>
+                    <p>Queremos acompañarte en cada etapa. Descubre cuándo podría llegar tu próximo periodo y prepárate con tiempo.</p>
+                    <button class="btn-action" onclick="window.location.href='pages/prediction/prediction.html'">Ver predicción</button>
                 </div>
-                <div class="card small-card">
-                    <h3>Intesidad de flujo</h3>
-                    <div class="circle-group">
-                        <div class="circle-item"><div class="circle"></div><span>Ligero</span></div>
-                        <div class="circle-item"><div class="circle"></div><span>Medio</span></div>
-                        <div class="circle-item"><div class="circle"></div><span>Pesado</span></div>
-                        <div class="circle-item"><div class="circle"></div><span>Manchitas</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
 
             <section class="bottom-row">
                 <div class="card card-invita" onclick="window.location.href='pages/sync/sync.html'">
@@ -117,33 +113,32 @@
         </main>
 
         <!-- Footer -->
-        <footer class="footer">
-             <div class="footer-logo">
-                 
-             </div>
+        <footer class="footer" style="display: flex; justify-content: space-between; align-items: stretch; padding: 2rem 4rem;">
              
-
-
-             <div class="footer-cesde">
-                 <div class="footer-contacts">
-                     <h4>Contactos</h4>
-                     <p>Andres Espinosa Rojas</p>
-                     <p>Alirio Andres Piña</p>
-                     <p>Valentina Corredor</p>
-                     <p>Laura Taborda</p>
-                     <p>Juliana Patiño</p>
-                 </div>
-
+             <!-- Columna Izquierda (Contactos) -->
+             <div class="footer-contacts" style="flex: 1; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid rgba(255, 255, 255, 0.4); padding-right: 2rem; margin: 0; min-width: auto; height: auto;">
+                 <h4 style="margin-bottom: 0.8rem;">Contactos</h4>
+                 <p style="margin-bottom: 0.2rem;">Andres Espinosa Rojas</p>
+                 <p style="margin-bottom: 0.2rem;">Alirio Andres Piña</p>
+                 <p style="margin-bottom: 0.2rem;">Valentina Corredor</p>
+                 <p style="margin-bottom: 0.2rem;">Laura Taborda</p>
+                 <p style="margin-bottom: 0.2rem;">Juliana Patiño</p>
              </div>
 
-             <div class="footer-schedule">
-                 <h2>CESDE</h2>
-                  <h3>Sábado</h3>
-                  <p>7:30 a 6:00 pm</p>
+             <!-- Columna Central (Logo) -->
+             <div class="footer-cesde" style="flex: 1; display: flex; justify-content: center; align-items: center; padding: 0 2rem; margin: 0;">
+                 <img src="assets/img/logo_cesde_blanco.png" alt="Logo CESDE" style="max-height: 90px; width: auto; opacity: 1;">
+             </div>
+
+             <!-- Columna Derecha (Horario) -->
+             <div class="footer-schedule" style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: right; border-left: 1px solid rgba(255, 255, 255, 0.4); padding-left: 2rem; margin: 0;">
+                  <h3 style="margin-bottom: 0.5rem; font-family: 'Cornella', serif; font-size: 2rem; letter-spacing: 2px;">CESDE</h3>
+                  <p style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.2rem;">Sábado</p>
+                  <p style="opacity: 0.9;">7:30 a 6:00 pm</p>
              </div>
         </footer>
     </div>
-    <script src="pages/index/index.js"></script>
+    <script type="module" src="pages/index/index.js"></script>
 </body>
 </html>
 

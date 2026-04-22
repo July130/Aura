@@ -1,7 +1,9 @@
 /* ═══════════════════════════════════════
    STATE
 ═══════════════════════════════════════ */
-let userName = 'Sarah';
+import { User } from '../../models/User.js';
+
+let userName = 'Usuario';
 let cycleDay = 12;
 let conversationHistory = [];
  
@@ -17,25 +19,31 @@ function getPhase(day) {
 }
  
 /* ═══════════════════════════════════════
-   LOGIN
+   INIT Y AUTENTICACIÓN
 ═══════════════════════════════════════ */
-function doLogin() {
-  const nameInput = document.getElementById('loginName').value.trim();
-  const dayInput  = parseInt(document.getElementById('loginDay').value) || 12;
-  if (!nameInput) { document.getElementById('loginName').focus(); return; }
-  userName = nameInput;
-  cycleDay = Math.min(Math.max(dayInput, 1), 35);
-  document.getElementById('loginOverlay').style.display = 'none';
-  initApp();
-}
- 
-document.getElementById('loginName').addEventListener('keydown', e => {
-  if (e.key === 'Enter') document.getElementById('loginDay').focus();
+document.addEventListener('DOMContentLoaded', () => {
+    const sesion = User.getCurrentUser();
+    if (!sesion) {
+        window.location.href = '../login/login.html';
+        return;
+    }
+    
+    userName = sesion.name || 'Usuario';
+    cycleDay = 1; // Default
+    
+    // Extraer ciclo real matemáticamente
+    const latestCycle = sesion.getLatestCycle();
+    if (latestCycle && latestCycle.startDate) {
+        const hoy = new Date();
+        if (hoy >= latestCycle.startDate) {
+            const diffTime = Math.abs(hoy - latestCycle.startDate);
+            cycleDay = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        }
+    }
+    
+    initApp();
 });
-document.getElementById('loginDay').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
-});
- 
+
 /* ═══════════════════════════════════════
    INIT
 ═══════════════════════════════════════ */
@@ -44,8 +52,8 @@ function initApp() {
   const first = userName.split(' ')[0];
  
   // topbar
-  document.getElementById('topUserName').textContent = first;
-  document.getElementById('topAvatar').textContent   = first[0].toUpperCase();
+  if (document.getElementById('topUserName')) document.getElementById('topUserName').textContent = first;
+  if (document.getElementById('topAvatar')) document.getElementById('topAvatar').textContent = first[0].toUpperCase();
  
   // dashboard
   document.getElementById('dashName').textContent       = first;
@@ -209,40 +217,31 @@ INSTRUCCIONES:
 - Máximo 200 palabras por respuesta, sé concisa y útil.
 - Si la usuaria menciona síntomas graves, recomienda consultar a un médico.`;
  
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'x-api-key': 'TU_API_KEY_AQUI',
-    'anthropic-version': '2023-06-01',
-    'anthropic-dangerous-direct-browser-access': 'true'
-  },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: conversationHistory
-      })
-    });
- 
-    const data = await response.json();
+  // Bloque demo: Simular respuesta localmente ya que no hay una API Key real conectada.
+  // Si tuvieras una llave de Anthropic real, reactivaríamos el fetch() aquí.
+  setTimeout(() => {
     setTyping(false);
- 
-    if (data.content && data.content[0]) {
-      const reply = data.content[0].text;
-      conversationHistory.push({ role: 'assistant', content: reply });
-      addMessage('ai', reply);
-    } else {
-      addMessage('ai', 'Lo siento, no pude procesar tu mensaje. ¿Intentamos de nuevo? 💕');
-    }
-  } catch (err) {
-    setTyping(false);
-    addMessage('ai', 'Tuve un problema de conexión. Por favor intenta de nuevo 🌸');
-  }
+    
+    // Armamos la respuesta personalizada analizando tu estado dinámicamente
+    const respuestaMuestra = `¡Hola! Aquí estoy para ayudarte a sentirte mejor 🌸.\n\nHe estado prestando atención a tu actividad de hoy; me he dado cuenta de que estás en tu fase **${phase.name}**, tu ánimo principal es **${activeMood}** y nos reportaste síntomas como: **${activeSymptoms}**.\n\nTodo esto es completamente normal durante tu tránsito biológico. Mi consejo principal para hoy es mantenerte muy hidratada y dedicar unos minutos al final de tu jornada para algo que verdaderamente te relaje y te consienta. ¡Tu cuerpo te lo agradecerá! ✨`;
+    
+    conversationHistory.push({ role: 'assistant', content: respuestaMuestra });
+    addMessage('ai', respuestaMuestra);
+  }, 1800);
 }
  
 function sendSuggestion(text) {
   document.getElementById('chatInput').value = text;
   sendMessage();
 }
+
+/* ═══════════════════════════════════════
+   MODULE EXPORTS (Para que funcionen los onclicks HTML)
+═══════════════════════════════════════ */
+window.setMood = setMood;
+window.toggleTag = toggleTag;
+window.setFlow = setFlow;
+window.sendMessage = sendMessage;
+window.sendSuggestion = sendSuggestion;
+window.handleKey = handleKey;
+window.autoResize = autoResize;

@@ -66,12 +66,38 @@ body {
 .back-btn:hover { background: rgba(255,255,255,0.3); }
 
 /* ── MAIN LAYOUT ── */
+.main-content {
+  display: flex !important;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
 .main {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 320px;
   gap: 0;
-  height: calc(100vh - 56px);
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
+}
+
+.ai-header {
+  background: var(--soft);
+  padding: 1.5rem 2rem;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+}
+.ai-header h1 {
+  margin: 0;
+}
+.ai-header .user-profile {
+  position: static !important;
+  transform: none !important;
 }
 
 /* ── CHAT PANEL ── */
@@ -466,7 +492,44 @@ body {
 }
 .login-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(194,24,91,0.5); }
 
-@media (max-width: 800px) {
-  .main { grid-template-columns: 1fr; }
-  .dashboard { display: none; }
+@media (max-width: 900px) {
+  .main-content {
+    height: auto !important; 
+    overflow-y: visible !important; /* Dejar scroll al sistema operativo */
+    overflow-x: hidden !important; /* Prevenir corte horizontal */
+    width: 100vw;
+    box-sizing: border-box;
+  }
+  .ai-header {
+    padding: 1rem 2.5rem !important; /* Empujar elementos más al centro en móviles */
+  }
+  .chat-header {
+    padding: 1.2rem 2.5rem !important;
+  }
+  .chat-input-bar {
+    padding: 1rem 2.5rem !important;
+  }
+  .main { 
+      display: block; /* Rompe el grid limitante */
+      overflow: visible; 
+      overflow-x: hidden;
+      width: 100%;
+      height: auto;
+  }
+  .chat-panel {
+      min-height: 60vh;
+      height: auto;
+      border-right: none;
+      border-bottom: 2px solid rgba(194,24,91,0.2);
+  }
+  .suggestions {
+      flex-wrap: wrap; /* Mostrar todos los botones en vez de scrollear */
+      overflow-x: visible;
+      justify-content: center;
+      padding: 12px 16px;
+  }
+  .dashboard {
+      overflow: visible;
+      height: auto;
+  }
 }

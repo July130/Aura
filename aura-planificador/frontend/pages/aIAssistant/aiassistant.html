@@ -5,36 +5,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AURA – Agente de IA</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index/index.css">
 <link rel="stylesheet" href="./aiassistant.css">
 </head>
 <body>
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <a href="../../index.html">
+                <picture>
+                    <source media="(max-width: 900px)" srcset="../../assets/img/logo_vertical.png">
+                    <img src="../../assets/img/logo_horizontal.png" alt="AURA Logo" class="aura-logo" style="max-width: 100%; height: auto;">
+                </picture>
+            </a>
+        </div>
 
-<!-- ── LOGIN OVERLAY ── -->
-<div class="login-overlay" id="loginOverlay">
-  <div class="login-box">
-    <div class="login-logo">🌸 AURA</div>
-    <div class="login-tagline">Tu compañera de bienestar femenino</div>
-    <label class="login-label">Tu nombre</label>
-    <input class="login-input" id="loginName" type="text" placeholder="Ej: Sarah, Valentina..." maxlength="30" />
-    <label class="login-label">Día actual de tu ciclo</label>
-    <input class="login-input" id="loginDay" type="number" placeholder="Ej: 12" min="1" max="35" />
-    <button class="login-btn" onclick="doLogin()">Entrar a AURA ✨</button>
-  </div>
-</div>
+        <nav class="sidebar-menu">
+            <a href="../symptoms/symptoms.html" class="menu-item">Síntomas</a>
+            <a href="../prediction/prediction.html" class="menu-item">Predicción</a>
+            <a href="../aIAssistant/aiassistant.html" class="menu-item active">Asistente IA</a>
+            <a href="#" class="menu-item">Quiénes Somos</a>
+        </nav>
 
-<!-- ── TOP BAR ── -->
-<div class="topbar">
-  <div class="topbar-logo"><span class="lotus">🌸</span> AURA</div>
-  <button class="back-btn" onclick="location.reload()">← Volver al inicio</button>
-  <div class="topbar-user">
-    <span id="topUserName">Sarah</span>
-    <div class="avatar-circle" id="topAvatar">S</div>
-  </div>
-</div>
+        <button class="btn-cerrar-sesión" onclick="import('../../models/User.js').then(m => { m.User.logout(); window.location.href='../login/login.html'; })">Cerrar Sesión</button>
+    </aside>
 
-<!-- ── MAIN LAYOUT ── -->
-<div class="main">
+    <main class="main-content">
+      <header class="dashboard-header ai-header">
+          <h1>Asistente AURA</h1>
+          <div class="user-profile">
+               <div class="avatar" id="topAvatar" style="background: linear-gradient(135deg, var(--button-bg), var(--primary-color)); font-family: 'Cornella', serif; font-size: 1.5rem; display:flex; align-items:center; justify-content:center; color:white;">A</div>
+          </div>
+      </header>
 
+      <div class="main">
   <!-- LEFT: CHAT -->
   <div class="chat-panel">
     <div class="chat-header">
@@ -169,8 +174,10 @@
       <div class="bar-chart" id="symptomChart"></div>
     </div>
   </div>
+    </div>
+  </main>
 </div>
 
-<script src="./aiassistant.js"></script>
+<script type="module" src="./aiassistant.js?v=2"></script>
 </body>
 </html> 

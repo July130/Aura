@@ -72,6 +72,40 @@
     margin-bottom: 1.5rem;
 }
 
+.prediction-card-aura {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 3rem;
+}
+
+.resultado-aura {
+    text-align: center;
+}
+
+.result-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-primary {
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 5px 15px rgba(209, 34, 96, 0.3);
+    transform: translateY(-2px);
+}
+
 .btn-cerrar-sesión {
     margin-top: auto;
     background-color: var(--button-bg);
